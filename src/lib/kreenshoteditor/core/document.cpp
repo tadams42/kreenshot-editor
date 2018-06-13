@@ -239,9 +239,9 @@ void Document::contentChangedNotificationGroupBegin(bool recordUndo, QString und
 
 void Document::contentChangedNotificationGroupEnd()
 {
-    Q_ASSERT(d->contentChangedNotificationGroupDepth > 0);
-
     Q_D();
+
+    Q_ASSERT(d->contentChangedNotificationGroupDepth > 0);
 
     d->contentChangedNotificationGroupDepth--;
 
@@ -297,10 +297,10 @@ void Document::addItem(KreenItemPtr item, bool recordUndo)
 
 void Document::deleteItem(KreenItemPtr item, bool recordUndo)
 {
+    Q_D();
+
     //d->contentChangedNotificationGroupMethodEnter(recordUndo);
     Q_ASSERT(d->itemMap.contains(item->id()));
-
-    Q_D();
 
     if (recordUndo) {
         d->undoStack.push(new DeleteItemCmd(this, item));
@@ -330,6 +330,8 @@ void Document::deleteItem(KreenItemPtr item, bool recordUndo)
  */
 void Document::itemStackLowerStep(KreenItemPtr item_in)
 {
+    Q_D();
+
     Q_ASSERT(d->itemMap.contains(item_in->id()));
 
     KreenItemPtr prev_item = nullptr;
@@ -355,16 +357,16 @@ void Document::itemStackLowerStep(KreenItemPtr item_in)
 
 bool Document::hasItemPropertiesChanged(KreenItemPtr item)
 {
-    Q_ASSERT(d->itemMap.contains(item->id()));
     Q_D();
+    Q_ASSERT(d->itemMap.contains(item->id()));
     auto docItem = d->itemMap[item->id()];
     return !item->deepEquals(docItem);
 }
 
 bool Document::applyItemPropertyChanges(KreenItemPtr item, bool recordUndo)
 {
-    Q_ASSERT(d->itemMap.contains(item->id()));
     Q_D();
+    Q_ASSERT(d->itemMap.contains(item->id()));
 
     if (!hasItemPropertiesChanged(item)) {
         qDebug() << "[INFO] Document::applyItemPropertyChanges items are equal. Return false";

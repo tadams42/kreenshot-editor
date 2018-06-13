@@ -30,6 +30,8 @@
 #include "selectionhandlegraphicsitem.h"
 #include "selectionhandlebase.h"
 
+#include <tgmath.h>
+
 namespace kreen {
 namespace ui {
 
@@ -207,8 +209,8 @@ void SelectionHandlesMgr::createOrUpdateHandles(SelectionHandleBase* instrItem, 
         qreal y = baseRect.y();
         qreal w = baseRect.width();
         qreal h = baseRect.height();
-        qreal w2 = floor(w / 2.0);
-        qreal h2 = floor(h / 2.0);
+        qreal w2 = std::floor(w / 2.0);
+        qreal h2 = std::floor(h / 2.0);
 
         positions.push_back(selhandles::Position1_TopLeft);
         positions.push_back(selhandles::Position2_TopRight);
