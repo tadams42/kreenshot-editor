@@ -1,4 +1,4 @@
-# /build/ is ignored globally
+build/
 /build-release/
 /qttestproj1.*
 /.kateproject.d/notes.txt

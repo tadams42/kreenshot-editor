@@ -1,5 +1,4 @@
-kreenshot-editor
-================
+# kreenshot-editor
 
 Screenshot image editing.
 
@@ -8,36 +7,48 @@ More documentation can be found in doc/DOC.md.
 Website: http://feinstaub.github.io/kreenshot-editor
 Central source code repository: https://projects.kde.org/projects/playground/graphics/kreenshot-editor
 
-Quick Build
------------
-# EITHER: for development (Debug, local install prefix):
+## Quick Build
+
+EITHER: for development (Debug, local install prefix):
+
+~~~sh
 $ mkdir build; cd build; cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=`pwd`/../usr ..
+~~~
 
-# OR: default (DCMAKE_INSTALL_PREFIX defaults to /usr/local):
+OR: default (DCMAKE_INSTALL_PREFIX defaults to /usr/local):
+
+~~~sh
 $ mkdir build; cd build; cmake ..
+~~~
 
-# THEN:
+THEN:
+
+~~~sh
 $ make
+~~~
 
-Run
----
+## Run
+
 in build directory:
+
+~~~sh
 $ ./src/kreenshot-editor
+~~~
 
 via helper script to test local installation:
+
+~~~sh
 $ ./doc/kreenshot-editor-local-debug.sh
+~~~
 
+## KNOWN BUGS
 
-KNOWN BUGS
-----------
 - Resize the main window requires the user to click the editor widget to restore the cursor to normal.
-  => No mouse events are handled until mouse click.
-  Happens since the beginning of the project
+    - => No mouse events are handled until mouse click. Happens since the beginning of the project
 - see TODO.txt
 
+## QUESTIONS
 
-QUESTIONS
----------
 - search for "WORKAROUND"
 - how to provide own icons?
 - how to install the lib and the app?
@@ -48,55 +59,70 @@ QUESTIONS
 - prepare-include-files.sh: does it makes sense to distinguish between KREEN_CORE_EXPORT and KREEN_UI_EXPORT???
 - restrict drawing outside scene rect; clip, clipping (currently solved with workaround)
 
+## DEVELOPMENT
 
-DEVELOPMENT
------------
-Debug with: $ kreenshot-editor ~/Pictures/screenshots/2014-05-04_Screenshot-1.png
+Debug with:
+
+~~~sh
+$ kreenshot-editor ~/Pictures/screenshots/2014-05-04_Screenshot-1.png
+~~~
 
 Create new header guard UUI:
+
+~~~sh
 $ python -c 'import uuid; print("UUID_" + str(uuid.uuid1()).replace("-", ""))'
+~~~
 
 Example to run a install prefixed build:
-    #!/bin/bash
-    LD_LIBRARY_PATH=~/dev/src/kreenshot-editor/build-release/install/usr/lib64:$LD_LIBRARY_PATH
-    ~/dev/src/kreenshot-editor/build-release/install/usr/bin/kreenshot-editor $@
 
+~~~sh
+#!/bin/bash
+LD_LIBRARY_PATH=~/dev/src/kreenshot-editor/build-release/install/usr/lib64:$LD_LIBRARY_PATH
+~/dev/src/kreenshot-editor/build-release/install/usr/bin/kreenshot-editor $@
+~~~
 
-Related tools
--------------
+## Related tools
+
 - greenshot (.NET) - the inspirational source for kreenshot-editor, Windows only
 
 Linux tools that have similar image editor capabilities:
+
 - shutter   (Perl)  http://shutter-project.org/
 - hotshots  (QT)    http://sourceforge.net/projects/hotshots/ http://thehive.xbee.net/index.php?module=pages&func=display&pageid=31
 
 Linux screenshot tools without own image editor:
+
 - ksnapshot (QT)    https://www.kde.org/applications/graphics/ksnapshot/
 
 More:
+
 - Lookit for Ubunto http://pmeyhoefer.de/blog/lookit-einfaches-und-leichtgewichtiges-screenshot-tool-fur-ubuntu/
 - http://lifehacker.com/5889994/the-best-screen-capture-tool-for-linux
 
 
-Implementation Notes: pimpl idiom
----------------------------------
+## Implementation Notes
+
+### pimpl idiom
+
+~~~
 #include <kreen/util/pimplutil.h>
-use `KREEN_Q_DECLARE_PRIVATE` to declare the QT style pimpl idiom
-use `Q_D();` to define the `d` variable when needed.
-NOTE that Q_D() and the other QT macros can also be called with parameter for a prefix name
- but we omit it here because our private class is a nested class which is then name just `Private`.
+~~~
+
+- use `KREEN_Q_DECLARE_PRIVATE` to declare the QT style pimpl idiom
+- use `Q_D();` to define the `d` variable when needed.
+- NOTE that Q_D() and the other QT macros can also be called with parameter for a prefix name but we omit it here because our private class is a nested class which is then name just `Private`.
+
 See also http://stackoverflow.com/questions/25250171/how-to-use-the-qts-pimpl-idiom
+
 TODO: is the `new Private(this)` delete automatically?
 
+### Behaviour details: undo and item selection
 
-Behaviour details: undo and item selection
-------------------------------------------
 - Undo modified (move, resize etc.) item(s) => (multi)selection is preserved
 - Undo deleted item(s) => selection is not restored (todo: is this ok or should it be restored?)
 
+## THANKS
 
-THANKS
-------
 See the list contributors in the AUTHORS file.
 If you did some contribution feel free to add yourself to this list.
 
